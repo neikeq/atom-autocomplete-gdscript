@@ -5,6 +5,9 @@
   "description": "A GDScript autocomplete-plus provider",
   "repository": "https://github.com/neikeq/atom-autocomplete-gdscript",
   "license": "MIT",
+  "keywords": [
+    "godot"
+  ],
   "engines": {
     "atom": ">=1.0.0 <2.0.0"
   },
