@@ -10,6 +10,6 @@ For completions to work, the project that contains the edited script must be ope
 
 ### Images
 
-![Input Actions](img/img_actions.png)
-![Scene Tree](img/img_tree.png)
-![Functions](img/img_funcs.png)
+![Input Actions](https://raw.githubusercontent.com/neikeq/atom-autocomplete-gdscript/master/img/img_actions.png)
+![Scene Tree](https://raw.githubusercontent.com/neikeq/atom-autocomplete-gdscript/master/img/img_tree.png)
+![Functions](https://raw.githubusercontent.com/neikeq/atom-autocomplete-gdscript/master/img/img_funcs.png)
