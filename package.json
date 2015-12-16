@@ -12,9 +12,9 @@
     "atom": ">=1.0.0 <2.0.0"
   },
   "dependencies": {
-    "cson-safe": "^0.1.1",
+    "cson-safe": "^1.0.5",
     "request": "^2.67.0",
-    "q": "1.4.1"
+    "q": "^2.0.3"
   },
   "providedServices": {
     "autocomplete.provider": {

@@ -1,4 +1,4 @@
-# atom-autocomplete-gdscript
+# Autocomplete GScript
 This package provides GDScript completions by [gd-autocomplete-service](https://github.com/neikeq/gd-autocomplete-service) Godot's module.
 
 For completions to work, the project that contains the edited script must be open with the Godot editor.
