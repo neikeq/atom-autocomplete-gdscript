@@ -1,4 +1,3 @@
-cson = require 'cson-safe'
 request = require 'request'
 q = require 'q'
 

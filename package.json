@@ -12,8 +12,7 @@
     "atom": ">=1.0.0 <2.0.0"
   },
   "dependencies": {
-    "cson-safe": "^1.0.5",
-    "request": "^2.67.0",
+    "request": "^2.69.0",
     "q": "^2.0.3"
   },
   "providedServices": {
