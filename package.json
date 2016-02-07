@@ -12,8 +12,9 @@
     "atom": ">=1.0.0 <2.0.0"
   },
   "dependencies": {
-    "request": "^2.69.0",
-    "q": "^2.0.3"
+    "md5": "^2.0.0",
+    "q": "^2.0.3",
+    "request": "^2.69.0"
   },
   "providedServices": {
     "autocomplete.provider": {

@@ -1,5 +1,7 @@
-request = require 'request'
+{ Directory, File } = require 'atom'
+md5 = require 'md5'
 q = require 'q'
+request = require 'request'
 
 module.exports =
   provider =
@@ -19,26 +21,62 @@ module.exports =
           column: bufferPosition['column']
         }
         meta: ''
+      projectPath = getOwnerProject(editor.getPath())
+      port = getPortForProject(projectPath)
       request {
         method: 'POST',
-        uri: 'http://localhost:6070',
+        uri: 'http://localhost:' + (port ? 6070),
         json: body
-      }, (error, response, body) =>
+      }, (error, response, body) ->
         suggestions = []
         if error?
           console.debug error
+          updateServersList()
+        else if response.statusCode is 404
+          updateServersList()
         else
           result = if typeof body is 'object' then body else parseBody(body)
-          suggestions = if result['suggestions']? then for s in result['suggestions']
+          suggestions = for s in result['suggestions'] ? []
             suggestion =
               text: s
-              replacementPrefix: if result['prefix']? then result['prefix'] else prefix
+              replacementPrefix: result['prefix'] ? prefix
         deferred.resolve suggestions
       deferred.promise
 
-    parseBody: (body) ->
-      try
-        JSON.parse(body)
-      catch error
-        console.debug 'Cannot parse server response body as JSON'
-        []
+parseBody = (body) ->
+  try
+    JSON.parse(body)
+  catch error
+    console.debug 'Cannot parse server response body as JSON'
+    []
+
+getOwnerProject = (filePath) ->
+  for project in @projectsCache ? []
+    if filePath.startsWith(project)
+      return project
+
+  currentDir = new File(filePath).getParent()
+  while not currentDir.getFile("engine.cfg").existsSync()
+    currentDir = currentDir.getParent()
+
+  if currentDir.isRoot()
+    undefined
+  else
+    ownerProject = currentDir.getPath()
+    if @projectsCache? and ownerProject not in @projectsCache
+      @projectsCache.push currentDir.getPath()
+    ownerProject
+
+getPortForProject = (projectPath) ->
+  if projectPath? then @serversList?[md5(projectPath)] else undefined
+
+updateServersList = () ->
+  new File(getServersListPath()).read(true).then (fileContent) ->
+    if fileContent?
+      @serversList = JSON.parse(fileContent)
+
+getServersListPath = () ->
+  if process.env.APPDATA?
+    process.env.APPDATA + "/Godot/.autocomplete-servers.json"
+  else if process.env.HOME?
+    process.env.HOME + "/.godot/.autocomplete-servers.json"
