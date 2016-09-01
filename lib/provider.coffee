@@ -36,10 +36,28 @@ module.exports =
           updateServersList()
         else
           result = if typeof body is 'object' then body else parseBody(body)
-          suggestions = for s in result['suggestions'] ? []
-            suggestion =
-              text: s
-              replacementPrefix: result['prefix'] ? prefix
+          if result['suggestions']? and result['suggestions'].length > 0
+            suggestions = for s in result['suggestions'] ? []
+              suggestion =
+                text: s
+                replacementPrefix: result['prefix'] ? prefix
+          else if result['hint']?
+            hint = result['hint']
+            inlineHint = hint.replace /[\r\n]/gm, ""
+            parserArgs = /\((.*?)\)/g.exec(inlineHint)
+            if parserArgs?
+              args = []
+              i = 1
+              for arg in parserArgs[1].split ","
+                args.push "${#{i}:#{arg.trim()}}"
+                i++
+              inlineHint = args.join ", "
+            suggestions = [
+              suggestion =
+                snippet: inlineHint
+                description: result['hint']
+                replacementPrefix: result['prefix'] ? prefix
+            ]
         deferred.resolve suggestions
       deferred.promise
 
