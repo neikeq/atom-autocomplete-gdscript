@@ -13,16 +13,16 @@ module.exports =
 
     getSuggestions: ({editor, bufferPosition, scopeDescriptor, prefix, activatedManually}) ->
       deferred = q.defer()
+      projectPath = getOwnerProject(editor.getPath())
+      port = getPortForProject(projectPath)
       body =
-        path: editor.getPath()
+        path: editor.getPath().replace(projectPath + '/', 'res://')
         text: editor.getText()
         cursor: {
           row: bufferPosition['row']
           column: bufferPosition['column']
         }
         meta: ''
-      projectPath = getOwnerProject(editor.getPath())
-      port = getPortForProject(projectPath)
       request {
         method: 'POST',
         uri: 'http://localhost:' + (port ? 6070),
